@@ -2,10 +2,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:app_resto_viet/database/food_stock_db.dart';
 
-class DatabaseService{
+class DatabaseService {
   Database? _database;
 
-  Future<Database> get database async{
+  Future<Database> get database async {
     if (_database != null) {
       return _database!;
     }
@@ -21,14 +21,18 @@ class DatabaseService{
 
   Future<Database> _initialize() async {
     final path = await fullPath;
-    var database = await openDatabase (
+    var database = await openDatabase(
       path,
       version: 1,
-      onCreate: create,
+      onCreate: (db, version) async {
+        await create(db, version, 'food_stock');
+      },
       singleInstance: true,
     );
     return database;
   }
 
-  Future<void> create(Database database, int version) async => await FoodStockDB().createTable(database);
+  Future<void> create(Database database, int version, String tableName) async {
+    await FoodStockDB().createTable(database, tableName);
+  }
 }
