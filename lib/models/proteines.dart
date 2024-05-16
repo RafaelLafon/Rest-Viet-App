@@ -1,8 +1,3 @@
-import 'dart:html';
-import 'dart:js_util';
-
-import 'package:flutter/foundation.dart';
-
 class Proteines{
   String Name;
   int Quantity;
